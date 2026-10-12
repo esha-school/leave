@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teacher Leave Request</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1b2a5c; --navy-2:#2a3d7a; --gold:#c9a227; --maroon:#7a1f2b;
+    --bg:#f4f1ea; --card:#ffffff; --ink:#1d2433; --muted:#5f6878; --line:#d9d3c4;
+    --ok:#1f7a4a; --okbg:#e6f4ec; --warn:#9a6a00; --warnbg:#fff4d6; --bad:#9b1c2c; --badbg:#fbe7ea;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans',system-ui,sans-serif;font-size:16px}
+  .banner{background:#fff;display:flex;align-items:center;gap:14px;padding:14px 16px;max-width:720px;margin:0 auto}
+  .crest{width:64px;height:64px;flex:none}
+  .crest img,.crest svg{width:100%;height:100%;object-fit:contain}
+  .bname{font-family:'Cinzel',serif;font-weight:800;color:var(--navy);font-size:34px;letter-spacing:.12em;line-height:1}
+  .bsub{font-family:'Cinzel',serif;font-weight:700;color:var(--maroon);font-size:12.5px;letter-spacing:.22em;margin-top:6px}
+  .stripes .g{height:6px;background:var(--gold)} .stripes .m{height:6px;background:var(--maroon)}
+  .bannerwrap{background:#fff;box-shadow:0 1px 0 var(--line)}
+  main{max-width:720px;margin:0 auto;padding:18px 16px 60px}
+  h1{font-size:22px;margin:4px 0 2px;color:var(--navy)}
+  .lead{color:var(--muted);margin:0 0 16px;font-size:14.5px}
+  .tabs{display:flex;gap:6px;margin:0 0 14px}
+  .tab{flex:1;border:1px solid var(--line);background:#fff;color:var(--navy);padding:10px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+  .card h2{font-size:15px;margin:0 0 12px;color:var(--maroon);text-transform:uppercase;letter-spacing:.06em}
+  label{display:block;font-weight:600;font-size:14.5px;margin:12px 0 5px}
+  label:first-of-type{margin-top:0}
+  .req{color:var(--maroon)}
+  input,select,textarea{width:100%;font:inherit;padding:11px 12px;border:1px solid #c8c1b0;border-radius:9px;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+  textarea{min-height:84px;resize:vertical}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .row>div label{margin-top:12px}
+  .check{display:flex;align-items:center;gap:10px;margin-top:14px;font-weight:600}
+  .check input{width:20px;height:20px}
+  .days{margin-top:12px;background:var(--bg);border-radius:9px;padding:10px 12px;font-weight:600;color:var(--navy)}
+  .hint{font-size:13px;color:var(--muted);margin-top:5px}
+  .btn{display:block;width:100%;border:0;border-radius:11px;padding:14px;font:inherit;font-weight:700;font-size:17px;background:var(--navy);color:#fff;cursor:pointer}
+  .btn:hover{background:var(--navy-2)} .btn:disabled{opacity:.6;cursor:wait}
+  .btn.alt{background:#fff;color:var(--navy);border:1px solid var(--navy);margin-top:10px}
+  .btn.wa{background:#1f7a4a;margin-top:10px}
+  .err{background:var(--badbg);color:var(--bad);padding:10px 12px;border-radius:9px;margin-top:12px;display:none;font-size:14.5px}
+  .done{text-align:center}
+  .done .big{font-size:40px}
+  .rid{font-family:ui-monospace,Menlo,monospace;font-size:24px;font-weight:700;letter-spacing:.06em;background:var(--bg);border:2px dashed var(--gold);border-radius:10px;padding:12px;margin:12px 0;color:var(--navy)}
+  .pill{display:inline-block;padding:4px 10px;border-radius:99px;font-weight:700;font-size:13px}
+  .Pending{background:var(--warnbg);color:var(--warn)} .Approved{background:var(--okbg);color:var(--ok)} .Rejected{background:var(--badbg);color:var(--bad)}
+  dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:12px 0 0;font-size:15px}
+  dt{color:var(--muted)} dd{margin:0;font-weight:600}
+  .demo{background:var(--warnbg);color:var(--warn);font-size:13px;padding:8px 12px;border-radius:9px;margin-bottom:12px;display:none}
+  .share{background:var(--okbg);color:#14532f;border-radius:10px;padding:11px 12px;margin:12px 0 2px;font-size:14px;text-align:left}
+  .share b{display:block;margin-bottom:3px}
+  .hidden{display:none}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:26px}
+  @media (max-width:520px){.row{grid-template-columns:1fr}.bname{font-size:28px}.bsub{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="bannerwrap">
+  <div class="banner">
+    <div class="crest">
+      <img src="logo.png" alt="ESHA crest" onerror="this.replaceWith(document.getElementById('crestSvg').content.cloneNode(true))">
+    </div>
+    <div>
+      <div class="bname" id="bname">ESHA</div>
+      <div class="bsub" id="bsub">SCHOOL OF KNOWLEDGE</div>
+    </div>
+  </div>
+  <div class="stripes"><div class="g"></div><div class="m"></div></div>
+</div>
+<template id="crestSvg">
+  <svg viewBox="0 0 64 72" aria-hidden="true"><path d="M32 3 L59 12 V36 C59 53 47 64 32 69 C17 64 5 53 5 36 V12 Z" fill="#1b2a5c" stroke="#c9a227" stroke-width="3"/><path d="M14 52 Q32 42 50 52" fill="none" stroke="#7a1f2b" stroke-width="3"/><text x="32" y="42" text-anchor="middle" font-family="Cinzel,serif" font-weight="800" font-size="26" fill="#c9a227">E</text></svg>
+</template>
+
+<main>
+  <h1>Teacher Leave Request</h1>
+  <p class="lead">Apply for leave online. You'll get a Request ID — use it to check whether your leave is approved.</p>
+
+  <div class="demo" id="demo">Preview mode — requests are kept only on this device until the Apps Script URL is added.</div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="apply">Apply for leave</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="status">Check status</button>
+  </div>
+
+  <!-- APPLY -->
+  <section id="apply">
+    <form id="form" novalidate>
+      <div class="card">
+        <h2>Your details</h2>
+        <label for="school">School <span class="req">*</span></label>
+        <select id="school" required></select>
+        <div class="row">
+          <div><label for="staffId">Staff ID <span class="req">*</span></label>
+            <input id="staffId" required autocomplete="off" placeholder="e.g. EST-012"></div>
+          <div><label for="phone">Mobile number <span class="req">*</span></label>
+            <input id="phone" required inputmode="tel" maxlength="10" placeholder="10-digit mobile"></div>
+        </div>
+        <label for="name">Full name <span class="req">*</span></label>
+        <input id="name" required autocomplete="name">
+        <label for="designation">Designation / subject</label>
+        <input id="designation" placeholder="e.g. Maths teacher, Class 6">
+      </div>
+
+      <div class="card">
+        <h2>Leave details</h2>
+        <label for="leaveType">Type of leave <span class="req">*</span></label>
+        <select id="leaveType" required>
+          <option value="">— Choose —</option>
+          <option>Casual Leave</option>
+          <option>Sick Leave</option>
+          <option>Earned Leave</option>
+          <option>Maternity Leave</option>
+          <option>On Duty (school work)</option>
+          <option>Loss of Pay</option>
+          <option>Other</option>
+        </select>
+        <div class="row">
+          <div><label for="from">From <span class="req">*</span></label><input type="date" id="from" required></div>
+          <div><label for="to">To <span class="req">*</span></label><input type="date" id="to" required></div>
+        </div>
+        <label class="check"><input type="checkbox" id="halfDay"> Half day only</label>
+        <div class="days" id="daysBox">Days: —</div>
+        <div class="hint">Sundays are not counted.</div>
+
+        <label for="reason">Reason <span class="req">*</span></label>
+        <textarea id="reason" required maxlength="1000"></textarea>
+
+        <label for="handover">Class handover / substitute teacher</label>
+        <textarea id="handover" maxlength="1000" placeholder="Which classes are affected and who will take them"></textarea>
+
+        <label for="file">Supporting document (optional)</label>
+        <input type="file" id="file" accept="image/*,application/pdf">
+        <div class="hint">Medical certificate, invitation, etc. — photo or PDF, up to 5 MB.</div>
+      </div>
+
+      <button class="btn" id="submitBtn" type="submit">Submit leave request</button>
+      <div class="err" id="err"></div>
+    </form>
+
+    <div class="card done hidden" id="done">
+      <div class="big">✅</div>
+      <h1>Leave request submitted</h1>
+      <p class="lead">Save or screenshot this Request ID.</p>
+      <div class="rid" id="rid"></div>
+      <p id="doneSummary" style="margin:0 0 6px"></p>
+      <div class="share">
+        <b>One more step: share in the staff WhatsApp group</b>
+        <span id="groupHint">Tap the button, then choose your school's staff group and press Send.</span>
+      </div>
+      <button class="btn wa" id="waBtn">📲 Share in staff WhatsApp group</button>
+      <button class="btn alt" id="copyBtn">Copy message</button>
+      <button class="btn alt" id="againBtn">Submit another request</button>
+    </div>
+  </section>
+
+  <!-- STATUS -->
+  <section id="status" class="hidden">
+    <form id="sform" class="card" novalidate>
+      <h2>Check leave status</h2>
+      <label for="sid">Request ID</label>
+      <input id="sid" placeholder="LV-261009-1234" autocomplete="off">
+      <label for="sstaff">Staff ID</label>
+      <input id="sstaff" autocomplete="off">
+      <div style="height:14px"></div>
+      <button class="btn" id="sBtn" type="submit">Check status</button>
+      <div class="err" id="serr"></div>
+      <div id="sresult"></div>
+    </form>
+  </section>
+
+  <footer>ESHA Group of Schools · Teacher Leave Request</footer>
+</main>
+
+<script>
+/* ======= CONFIG ======= */
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzIHCShcbU2DWxSFsBqBE_AT2NbFhcMkJT8PLFs4mjlF2wYYnccmSeP0mW50NIS8Efh/exec';
+// group: the WhatsApp group name teachers should pick (shown as a hint after submitting)
+const SCHOOLS = {
+  esha: { label: 'ESHA School of Knowledge', banner: 'ESHA',     sub: 'SCHOOL OF KNOWLEDGE', group: 'Esha Staff' },
+  gvp:  { label: 'Gouthama GVP',             banner: 'GOUTHAMA', sub: 'GVP',                 group: 'Gouthama GVP Staff' },
+  vn:   { label: 'Gouthama VN',              banner: 'GOUTHAMA', sub: 'VN',                  group: 'Gouthama VN Staff' }
+};
+/* ====================== */
+
+const DEMO = !/^https:\/\/script\.google\.com\//.test(SCRIPT_URL);
+const $ = id => document.getElementById(id);
+if (DEMO) $('demo').style.display = 'block';
+
+// ---------- API (with offline preview fallback) ----------
+let mem = [];
+function demoLoad(){ try{ return JSON.parse(localStorage.getItem('esha_leave_demo')||'[]') }catch(e){ return mem } }
+function demoSave(a){ mem = a; try{ localStorage.setItem('esha_leave_demo', JSON.stringify(a)) }catch(e){} }
+async function api(payload){
+  if (!DEMO){
+    const r = await fetch(SCRIPT_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+    return r.json();
+  }
+  await new Promise(r=>setTimeout(r,500));
+  const all = demoLoad();
+  if (payload.action==='submit'){
+    const d=new Date(), id='LV-'+String(d.getFullYear()).slice(2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+Math.floor(1000+Math.random()*9000);
+    all.push({...payload, attachment: payload.attachment? payload.attachment.name : '', id, status:'Pending', remarks:'', submittedAt:d.toLocaleString()});
+    demoSave(all); return {ok:true,id};
+  }
+  if (payload.action==='status'){
+    const r = all.find(x=>x.id===payload.id.trim().toUpperCase() && x.staffId.toUpperCase()===payload.staffId.trim().toUpperCase());
+    return r? {ok:true,request:r} : {ok:false,error:'No request found for that Request ID and Staff ID.'};
+  }
+}
+
+// ---------- school selection (?school=esha|gvp|vn locks it) ----------
+const BOOT = window.__BOOT || {};   // set when the page is served by Apps Script
+const param = BOOT.school || new URLSearchParams(location.search).get('school');
+const sel = $('school');
+sel.innerHTML = '<option value="">— Choose school —</option>' + Object.entries(SCHOOLS).map(([k,s])=>`<option value="${k}">${s.label}</option>`).join('');
+function applyBanner(){
+  const s = SCHOOLS[sel.value] || SCHOOLS.esha;
+  $('bname').textContent = s.banner; $('bsub').textContent = s.sub;
+}
+if (param && SCHOOLS[param]){ sel.value = param; sel.disabled = true; }
+sel.addEventListener('change', applyBanner); applyBanner();
+
+// ---------- tabs ----------
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected', x===t));
+  $('apply').classList.toggle('hidden', t.dataset.tab!=='apply');
+  $('status').classList.toggle('hidden', t.dataset.tab!=='status');
+}));
+
+// ---------- day count ----------
+function countDays(){
+  const f=$('from').value, t=$('to').value;
+  if (!f||!t) return null;
+  const a=new Date(f+'T00:00'), b=new Date(t+'T00:00');
+  if (b<a) return -1;
+  if ($('halfDay').checked) return 0.5;
+  let n=0; for(let d=new Date(a); d<=b; d.setDate(d.getDate()+1)) if (d.getDay()!==0) n++;
+  return n;
+}
+function showDays(){
+  const n=countDays();
+  $('daysBox').textContent = n===null ? 'Days: —' : n<0 ? '“To” date is before “From” date' : 'Days: '+n;
+}
+['from','to','halfDay'].forEach(id=>$(id).addEventListener('change',()=>{
+  if (id==='from' && !$('to').value) $('to').value=$('from').value;
+  if ($('halfDay').checked && $('from').value) $('to').value=$('from').value;
+  showDays();
+}));
+$('to').min = ''; $('from').addEventListener('change',()=>{$('to').min=$('from').value});
+
+// ---------- file to base64 ----------
+function readFile(file){
+  return new Promise((res,rej)=>{
+    if (!file) return res(null);
+    if (file.size > 5*1024*1024) return rej(new Error('File is larger than 5 MB.'));
+    const r=new FileReader();
+    r.onload=()=>res({name:file.name,type:file.type,data:String(r.result).split(',')[1]});
+    r.onerror=()=>rej(new Error('Could not read the file.'));
+    r.readAsDataURL(file);
+  });
+}
+
+// ---------- submit ----------
+let last = null;
+function fail(el,msg){ el.textContent=msg; el.style.display='block'; }
+$('form').addEventListener('submit', async e=>{
+  e.preventDefault(); const err=$('err'); err.style.display='none';
+  const v = id => $(id).value.trim();
+  if (!sel.value) return fail(err,'Please choose your school.');
+  if (!v('staffId')||!v('name')) return fail(err,'Please enter your Staff ID and name.');
+  if (!/^\d{10}$/.test(v('phone'))) return fail(err,'Please enter a 10-digit mobile number.');
+  if (!v('leaveType')) return fail(err,'Please choose the type of leave.');
+  const days = countDays();
+  if (days===null) return fail(err,'Please choose the From and To dates.');
+  if (days<0) return fail(err,'“To” date cannot be before “From” date.');
+  if (days===0) return fail(err,'The dates you chose are only Sundays.');
+  if (!v('reason')) return fail(err,'Please write the reason for leave.');
+
+  const btn=$('submitBtn'); btn.disabled=true; btn.textContent='Submitting…';
+  try{
+    const attachment = await readFile($('file').files[0]);
+    const payload = { action:'submit', school:SCHOOLS[sel.value].label, staffId:v('staffId'), name:v('name'),
+      designation:v('designation'), phone:v('phone'), leaveType:v('leaveType'), from:v('from'), to:v('to'),
+      halfDay:$('halfDay').checked, days, reason:v('reason'), handover:v('handover'), attachment };
+    const r = await api(payload);
+    if (!r.ok) throw new Error(r.error||'Could not submit.');
+    last = {...payload, id:r.id};
+    $('rid').textContent = r.id;
+    $('doneSummary').textContent = `${payload.leaveType} · ${fmt(payload.from)} → ${fmt(payload.to)} · ${days} day${days===1?'':'s'} · Status: Pending`;
+    const grp = SCHOOLS[sel.value].group;
+    $('groupHint').textContent = `Tap the button below, choose the “${grp}” group in WhatsApp, and press Send.`;
+    $('form').classList.add('hidden'); $('done').classList.remove('hidden'); scrollTo(0,0);
+  }catch(ex){ fail(err, ex.message||'Something went wrong. Please try again.'); }
+  finally{ btn.disabled=false; btn.textContent='Submit leave request'; }
+});
+function fmt(d){ const [y,m,dd]=d.split('-'); return `${dd}/${m}/${y}`; }
+
+function shareText(){
+  const dates = last.from===last.to ? fmt(last.from) : `${fmt(last.from)} to ${fmt(last.to)}`;
+  const link = (BOOT.base || (location.origin + location.pathname)) + (sel.value ? '?school='+sel.value : '');
+  return [
+    `🗓️ *LEAVE REQUEST* — ${last.school}`,
+    ``,
+    `*Name:* ${last.name} (${last.staffId})`,
+    last.designation ? `*Designation:* ${last.designation}` : null,
+    `*Leave:* ${last.leaveType}${last.halfDay ? ' (half day)' : ''}`,
+    `*Dates:* ${dates} — ${last.days} day${last.days===1?'':'s'}`,
+    `*Reason:* ${last.reason}`,
+    last.handover ? `*Class handover:* ${last.handover}` : null,
+    ``,
+    `Request ID: ${last.id}`,
+    `Status: ⏳ Pending approval`,
+    `Check status: ${link}`
+  ].filter(x=>x!==null).join('\n');
+}
+$('waBtn').addEventListener('click',()=>{
+  if(!last) return;
+  window.open('https://wa.me/?text='+encodeURIComponent(shareText()),'_blank');
+});
+$('copyBtn').addEventListener('click', async ()=>{
+  if(!last) return;
+  try{ await navigator.clipboard.writeText(shareText()); $('copyBtn').textContent='✓ Copied — paste it in the group'; }
+  catch(e){ $('copyBtn').textContent='Copy not allowed here — use the WhatsApp button'; }
+  setTimeout(()=>$('copyBtn').textContent='Copy message', 3000);
+});
+$('againBtn').addEventListener('click',()=>{
+  const keep = { staffId:$('staffId').value, name:$('name').value, phone:$('phone').value, designation:$('designation').value, school:sel.value };
+  $('form').reset(); Object.entries(keep).forEach(([k,val])=>{ (k==='school'?sel:$(k)).value=val; });
+  showDays(); $('done').classList.add('hidden'); $('form').classList.remove('hidden');
+});
+
+// ---------- status ----------
+$('sform').addEventListener('submit', async e=>{
+  e.preventDefault(); const err=$('serr'); err.style.display='none'; $('sresult').innerHTML='';
+  const id=$('sid').value.trim(), st=$('sstaff').value.trim();
+  if(!id||!st) return fail(err,'Enter both the Request ID and your Staff ID.');
+  const b=$('sBtn'); b.disabled=true; b.textContent='Checking…';
+  try{
+    const r = await api({action:'status', id, staffId:st});
+    if(!r.ok) throw new Error(r.error);
+    const q=r.request, esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    $('sresult').innerHTML = `<dl>
+      <dt>Status</dt><dd><span class="pill ${esc(q.status)}">${esc(q.status)}</span></dd>
+      <dt>Name</dt><dd>${esc(q.name)}</dd><dt>School</dt><dd>${esc(q.school)}</dd>
+      <dt>Leave</dt><dd>${esc(q.leaveType)} · ${esc(q.days)} day(s)</dd>
+      <dt>Dates</dt><dd>${esc(q.from)} → ${esc(q.to)}</dd>
+      ${q.remarks?`<dt>Remarks</dt><dd>${esc(q.remarks)}</dd>`:''}</dl>`;
+  }catch(ex){ fail(err, ex.message||'Could not check status.'); }
+  finally{ b.disabled=false; b.textContent='Check status'; }
+});
+</script>
+</body>
+</html>
