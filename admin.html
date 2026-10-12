@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Leave Approvals</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#1b2a5c;--navy-2:#2a3d7a;--gold:#c9a227;--maroon:#7a1f2b;--bg:#f4f1ea;--ink:#1d2433;--muted:#5f6878;--line:#d9d3c4;
+    --ok:#1f7a4a;--okbg:#e6f4ec;--warn:#9a6a00;--warnbg:#fff4d6;--bad:#9b1c2c;--badbg:#fbe7ea}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans',system-ui,sans-serif;font-size:15px}
+  .bannerwrap{background:#fff}
+  .banner{display:flex;align-items:center;gap:14px;padding:12px 16px;max-width:1000px;margin:0 auto}
+  .crest{width:54px;height:54px;flex:none} .crest img,.crest svg{width:100%;height:100%;object-fit:contain}
+  .bname{font-family:'Cinzel',serif;font-weight:800;color:var(--navy);font-size:30px;letter-spacing:.12em;line-height:1}
+  .bsub{font-family:'Cinzel',serif;font-weight:700;color:var(--maroon);font-size:11.5px;letter-spacing:.22em;margin-top:5px}
+  .stripes .g{height:5px;background:var(--gold)} .stripes .m{height:5px;background:var(--maroon)}
+  main{max-width:1000px;margin:0 auto;padding:18px 16px 60px}
+  h1{color:var(--navy);font-size:22px;margin:0 0 12px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+  input,select,textarea{font:inherit;padding:9px 11px;border:1px solid #c8c1b0;border-radius:9px;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+  .btn{border:0;border-radius:9px;padding:9px 14px;font:inherit;font-weight:700;background:var(--navy);color:#fff;cursor:pointer}
+  .btn:disabled{opacity:.6}
+  .btn.wa{background:#1f7a4a}
+  .btn.ok{background:var(--ok)} .btn.bad{background:var(--bad)} .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+  .login{max-width:360px;margin:30px auto}
+  .login input{width:100%;margin:8px 0 12px;font-size:20px;letter-spacing:.3em;text-align:center}
+  .login .btn{width:100%;padding:12px}
+  .err{color:var(--bad);background:var(--badbg);padding:8px 11px;border-radius:8px;margin-top:10px;display:none}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
+  .stat b{display:block;font-size:24px;color:var(--navy)} .stat span{color:var(--muted);font-size:13px}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .filters input{flex:1;min-width:160px}
+  .req{display:grid;grid-template-columns:1fr auto;gap:8px 14px}
+  .req h3{margin:0;font-size:16px;color:var(--navy)}
+  .meta{color:var(--muted);font-size:13.5px;margin-top:2px}
+  .pill{display:inline-block;padding:3px 10px;border-radius:99px;font-weight:700;font-size:12.5px;height:fit-content}
+  .Pending{background:var(--warnbg);color:var(--warn)} .Approved{background:var(--okbg);color:var(--ok)} .Rejected{background:var(--badbg);color:var(--bad)}
+  .body{grid-column:1/-1;font-size:14.5px}
+  .body p{margin:6px 0}
+  .clinfo{background:#eef1f8;color:#1b2a5c;border-radius:8px;padding:6px 10px;display:inline-block}
+  .clinfo.over{background:#fbe7ea;color:#9b1c2c} .body b{color:var(--muted);font-weight:600}
+  .act{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid var(--line);padding-top:10px;margin-top:4px}
+  .act input{flex:1;min-width:180px}
+  .demo{background:var(--warnbg);color:var(--warn);font-size:13px;padding:8px 12px;border-radius:9px;margin-bottom:12px;display:none}
+  .empty{text-align:center;color:var(--muted);padding:30px}
+  .hidden{display:none}
+  @media (max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="bannerwrap">
+  <div class="banner">
+    <div class="crest"><img src="logo.png" alt="ESHA crest" onerror="this.replaceWith(document.getElementById('crestSvg').content.cloneNode(true))"></div>
+    <div><div class="bname">ESHA</div><div class="bsub">SCHOOL OF KNOWLEDGE</div></div>
+  </div>
+  <div class="stripes"><div class="g"></div><div class="m"></div></div>
+</div>
+<template id="crestSvg">
+  <svg viewBox="0 0 64 72" aria-hidden="true"><path d="M32 3 L59 12 V36 C59 53 47 64 32 69 C17 64 5 53 5 36 V12 Z" fill="#1b2a5c" stroke="#c9a227" stroke-width="3"/><path d="M14 52 Q32 42 50 52" fill="none" stroke="#7a1f2b" stroke-width="3"/><text x="32" y="42" text-anchor="middle" font-family="Cinzel,serif" font-weight="800" font-size="26" fill="#c9a227">E</text></svg>
+</template>
+
+<main>
+  <div class="demo" id="demo">Preview mode — showing requests submitted on this device.</div>
+
+  <section id="loginView" class="card login">
+    <h1>Leave approvals</h1>
+    <label for="pin">Admin PIN</label>
+    <input id="pin" type="password" inputmode="numeric" maxlength="8" autocomplete="off">
+    <label for="who">Your name (shown as approver)</label>
+    <input id="who" placeholder="e.g. Principal" style="letter-spacing:0;font-size:16px;text-align:left">
+    <button class="btn" id="loginBtn">Open</button>
+    <div class="err" id="lerr"></div>
+  </section>
+
+  <section id="dash" class="hidden">
+    <h1>Teacher leave requests</h1>
+    <div class="stats">
+      <div class="stat"><b id="sPend">0</b><span>Pending</span></div>
+      <div class="stat"><b id="sAppr">0</b><span>Approved</span></div>
+      <div class="stat"><b id="sRej">0</b><span>Rejected</span></div>
+      <div class="stat"><b id="sToday">0</b><span>On leave today</span></div>
+    </div>
+    <div class="filters">
+      <select id="fSchool"><option value="">All schools</option></select>
+      <select id="fStatus"><option value="Pending">Pending</option><option value="">All statuses</option><option>Approved</option><option>Rejected</option></select>
+      <input id="fText" placeholder="Search name, staff ID, request ID">
+      <button class="btn ghost" id="refresh">Refresh</button>
+    </div>
+    <div id="list"></div>
+  </section>
+</main>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzIHCShcbU2DWxSFsBqBE_AT2NbFhcMkJT8PLFs4mjlF2wYYnccmSeP0mW50NIS8Efh/exec';
+const DEMO = !/^https:\/\/script\.google\.com\//.test(SCRIPT_URL);
+const $ = id => document.getElementById(id);
+if (DEMO) $('demo').style.display='block';
+
+let mem=[];
+function demoLoad(){ try{return JSON.parse(localStorage.getItem('esha_leave_demo')||'[]')}catch(e){return mem} }
+function demoSave(a){ mem=a; try{localStorage.setItem('esha_leave_demo',JSON.stringify(a))}catch(e){} }
+async function api(p){
+  if(!DEMO){ const r=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)}); return r.json(); }
+  await new Promise(r=>setTimeout(r,300));
+  if (!p.pin) return {ok:false,error:'Enter the PIN'};   // preview only — the real PIN is checked on the server
+  const all=demoLoad();
+  if(p.action==='list') return {ok:true,requests:[...all].reverse()};
+  if(p.action==='decide'){ const r=all.find(x=>x.id===p.id); Object.assign(r,{status:p.status,remarks:p.remarks,decidedBy:p.by,decidedAt:new Date().toLocaleString()}); demoSave(all); return {ok:true}; }
+}
+
+let PIN='', WHO='', DATA=[];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+$('loginBtn').addEventListener('click', login);
+$('pin').addEventListener('keydown', e=>{ if(e.key==='Enter') login(); });
+async function login(){
+  PIN=$('pin').value.trim(); WHO=$('who').value.trim()||'Admin';
+  const b=$('loginBtn'); b.disabled=true; $('lerr').style.display='none';
+  try{ await load(); $('loginView').classList.add('hidden'); $('dash').classList.remove('hidden'); }
+  catch(e){ $('lerr').textContent=e.message; $('lerr').style.display='block'; }
+  finally{ b.disabled=false; }
+}
+async function load(){
+  const r=await api({action:'list',pin:PIN});
+  if(!r.ok) throw new Error(r.error||'Could not load');
+  DATA=r.requests;
+  const schools=[...new Set(DATA.map(x=>x.school))].sort();
+  const cur=$('fSchool').value;
+  $('fSchool').innerHTML='<option value="">All schools</option>'+schools.map(s=>`<option>${esc(s)}</option>`).join('');
+  $('fSchool').value=cur;
+  render();
+}
+function toISO(s){ // accepts yyyy-mm-dd or sheet display formats like 10/9/2026
+  if(/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
+  const d=new Date(s); return isNaN(d)?'':localISO(d);
+}
+function localISO(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function render(){
+  const sc=$('fSchool').value, st=$('fStatus').value, q=$('fText').value.trim().toLowerCase();
+  const scoped=DATA.filter(x=>!sc||x.school===sc);
+  const today=localISO(new Date());
+  $('sPend').textContent=scoped.filter(x=>x.status==='Pending').length;
+  $('sAppr').textContent=scoped.filter(x=>x.status==='Approved').length;
+  $('sRej').textContent=scoped.filter(x=>x.status==='Rejected').length;
+  $('sToday').textContent=scoped.filter(x=>x.status==='Approved'&&toISO(x.from)<=today&&toISO(x.to)>=today).length;
+  const rows=scoped.filter(x=>(!st||x.status===st)&&(!q||[x.name,x.staffId,x.id].join(' ').toLowerCase().includes(q)));
+  if(!rows.length){ $('list').innerHTML='<div class="card empty">No requests here.</div>'; return; }
+  $('list').innerHTML=rows.map(x=>`
+    <div class="card req" data-id="${esc(x.id)}">
+      <div><h3>${esc(x.name)} <span style="font-weight:400;color:var(--muted)">· ${esc(x.staffId)}</span></h3>
+        <div class="meta">${[x.school,x.designation,x.phone,x.id].filter(Boolean).map(esc).join(' · ')}</div></div>
+      <span class="pill ${esc(x.status)}">${esc(x.status)}</span>
+      <div class="body">
+        <p><b>Leave:</b> ${esc(x.leaveType)} · ${esc(x.from)} → ${esc(x.to)} · <strong>${esc(x.days)} day(s)</strong>${String(x.halfDay)==='true'||x.halfDay==='Yes'?' (half day)':''}</p>
+        ${x.clMonthLabel?(()=>{const lim=Number(x.clLimit||1), used=Number(x.clMonth||0), over=x.leaveType==='Casual Leave'&&(used>lim||(x.status==='Pending'&&used>=lim));
+          return `<p class="clinfo${over?' over':''}"><b>${esc(x.clMonthLabel)}:</b> ${esc(x.appsMonth)} application(s) · CL approved <strong>${used}</strong> of ${lim} allowed${over?(x.status==='Pending'?' — approving this will exceed the CL limit':' — over the CL limit'):''}</p>`})():''}
+        <p><b>Reason:</b> ${esc(x.reason)}</p>
+        ${x.handover?`<p><b>Handover:</b> ${esc(x.handover)}</p>`:''}
+        ${x.attachment?(String(x.attachment).startsWith('http')?`<p><b>Document:</b> <a href="${esc(x.attachment)}" target="_blank" rel="noopener">Open attachment</a></p>`:`<p><b>Document:</b> ${esc(x.attachment)}</p>`):''}
+        ${x.status!=='Pending'?`<p><b>Decided by:</b> ${esc(x.decidedBy)} · ${esc(x.decidedAt)}${x.remarks?` — ${esc(x.remarks)}`:''}</p>`:''}
+      </div>
+      <div class="act">
+        <input placeholder="Remarks (optional)" value="${esc(x.remarks||'')}">
+        <button class="btn ok" data-s="Approved">Approve</button>
+        <button class="btn bad" data-s="Rejected">Reject</button>
+        ${x.status!=='Pending'?'<button class="btn ghost" data-s="Pending">Reset</button><button class="btn wa" data-share="1">📲 Share decision in group</button>':''}
+      </div>
+    </div>`).join('');
+}
+function fmtD(s){ const i=toISO(s); if(!i) return s; const [y,m,d]=i.split('-'); return `${d}/${m}/${y}`; }
+function decisionText(x){
+  const ok = x.status==='Approved';
+  const dates = fmtD(x.from)===fmtD(x.to) ? fmtD(x.from) : `${fmtD(x.from)} to ${fmtD(x.to)}`;
+  return [
+    `${ok?'✅':'❌'} *LEAVE ${x.status.toUpperCase()}* — ${x.school}`,
+    ``,
+    `*Name:* ${x.name} (${x.staffId})`,
+    `*Leave:* ${x.leaveType}`,
+    `*Dates:* ${dates} — ${x.days} day(s)`,
+    x.handover ? `*Class handover:* ${x.handover}` : null,
+    x.remarks ? `*Remarks:* ${x.remarks}` : null,
+    ``,
+    `Request ID: ${x.id}`,
+    `— ${x.decidedBy||WHO}`
+  ].filter(v=>v!==null).join('\n');
+}
+$('list').addEventListener('click', async e=>{
+  const sh=e.target.closest('button[data-share]');
+  if(sh){ const x=DATA.find(r=>r.id===sh.closest('.req').dataset.id); if(x) window.open('https://wa.me/?text='+encodeURIComponent(decisionText(x)),'_blank'); return; }
+  const b=e.target.closest('button[data-s]'); if(!b) return;
+  const card=b.closest('.req'), id=card.dataset.id, remarks=card.querySelector('input').value.trim();
+  card.querySelectorAll('button').forEach(x=>x.disabled=true);
+  const r=await api({action:'decide',pin:PIN,id,status:b.dataset.s,remarks,by:WHO});
+  if(!r.ok){ showErr(card, r.error||'Could not save'); card.querySelectorAll('button').forEach(x=>x.disabled=false); return; }
+  await load();
+});
+['fSchool','fStatus'].forEach(i=>$(i).addEventListener('change',render));
+$('fText').addEventListener('input',render);
+$('refresh').addEventListener('click',()=>load().catch(e=>{ $('list').insertAdjacentHTML('afterbegin','<div class="card empty">'+esc(e.message)+'</div>'); }));
+function showErr(card,msg){ let el=card.querySelector('.cerr'); if(!el){ el=document.createElement('div'); el.className='err cerr'; el.style.display='block'; el.style.gridColumn='1/-1'; card.appendChild(el); } el.textContent=msg; }
+</script>
+</body>
+</html>
